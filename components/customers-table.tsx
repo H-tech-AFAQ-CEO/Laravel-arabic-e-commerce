@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -100,6 +100,11 @@ interface CustomersTableProps {
 export function CustomersTable({ searchQuery, statusFilter }: CustomersTableProps) {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const filteredCustomers = mockCustomers.filter((customer) => {
     const matchesSearch =
@@ -221,15 +226,17 @@ export function CustomersTable({ searchQuery, statusFilter }: CustomersTableProp
         </CardContent>
       </Card>
 
-      <CustomerDetailsDialog
-        open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-        customer={selectedCustomer}
-        onClose={() => {
-          setSelectedCustomer(null)
-          setIsDialogOpen(false)
-        }}
-      />
+      {isMounted && (
+        <CustomerDetailsDialog
+          open={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+          customer={selectedCustomer}
+          onClose={() => {
+            setSelectedCustomer(null)
+            setIsDialogOpen(false)
+          }}
+        />
+      )}
     </>
   )
 }

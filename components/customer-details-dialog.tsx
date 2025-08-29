@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -59,6 +59,15 @@ const mockOrderHistory = [
 
 export function CustomerDetailsDialog({ open, onOpenChange, customer, onClose }: CustomerDetailsDialogProps) {
   const [customerStatus, setCustomerStatus] = useState(customer?.status || "active")
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  if (!isMounted) {
+    return null
+  }
 
   if (!customer) return null
 

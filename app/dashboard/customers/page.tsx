@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { DashboardLayout } from "@/components/dashboard-layout"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,6 +13,11 @@ export default function CustomersPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   return (
     <DashboardLayout>
@@ -59,7 +64,7 @@ export default function CustomersPage() {
         </div>
 
         <CustomersTable searchQuery={searchQuery} statusFilter={statusFilter} />
-        <CustomerDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} />
+        {isMounted && <CustomerDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} />}
       </div>
     </DashboardLayout>
   )

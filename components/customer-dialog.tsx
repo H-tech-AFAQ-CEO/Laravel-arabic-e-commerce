@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   Dialog,
   DialogContent,
@@ -26,6 +26,7 @@ interface CustomerDialogProps {
 const cities = ["الرياض", "جدة", "الدمام", "مكة المكرمة", "المدينة المنورة", "الطائف", "تبوك", "أبها"]
 
 export function CustomerDialog({ open, onOpenChange, customer, onClose }: CustomerDialogProps) {
+  const [isMounted, setIsMounted] = useState(false)
   const [formData, setFormData] = useState({
     name: customer?.name || "",
     email: customer?.email || "",
@@ -34,6 +35,14 @@ export function CustomerDialog({ open, onOpenChange, customer, onClose }: Custom
     city: customer?.city || "",
     status: customer?.status || "active",
   })
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  if (!isMounted) {
+    return null
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
